@@ -1,4 +1,5 @@
 import tensorflow as tf 
+import matplotlib.pyplot as plt 
 
 class ProcessData:
     def load_datasets(self,dataset):
@@ -14,3 +15,24 @@ class ProcessData:
                                                                     batch_size=32)
 
         return train_ds, val_ds
+    
+class Visualization:
+    def __init__(self) -> None:
+        pass
+
+    def show_sample_data(self, train_ds,label_file):
+        class_numbers = train_ds.class_names 
+        class_names = [] 
+        for i in class_numbers: 
+            class_names.append(label_file['Name'][int(i)]) 
+
+            
+        plt.figure(figsize=(10, 10)) 
+        for images, labels in train_ds.take(1): 
+            for i in range(25): 
+                ax = plt.subplot(5, 5, i + 1) 
+                plt.imshow(images[i].numpy().astype("uint8")) 
+                plt.title(class_names[labels[i]]) 
+                plt.axis("off") 
+
+        plt.show() 

@@ -30,7 +30,7 @@ warnings.filterwarnings('ignore')
 class Application :
 	def __init__(self) -> None:
 		self.data_processor = utilities.ProcessData()
-	
+		self.visualize = utilities.Visualization()
 	def main(self):
 		# path to the folder containing our dataset 
 		dataset = 'data/traffic_Data/DATA'
@@ -39,22 +39,8 @@ class Application :
 		label_file = pd.read_csv('data/labels.csv') 
 
 		train_ds,val_ds = self.data_processor.load_datasets(dataset)
-		class_numbers = train_ds.class_names 
-		class_names = [] 
-		for i in class_numbers: 
-			class_names.append(label_file['Name'][int(i)]) 
-
-			
-		# plt.figure(figsize=(10, 10)) 
-		# for images, labels in train_ds.take(1): 
-		# 	for i in range(25): 
-		# 		ax = plt.subplot(5, 5, i + 1) 
-		# 		plt.imshow(images[i].numpy().astype("uint8")) 
-		# 		plt.title(class_names[labels[i]]) 
-		# 		plt.axis("off") 
-
-		# plt.show() 
-
+		self.visualize.show_sample_data(train_ds, label_file)
+		
 		data_augmentation = tf.keras.Sequential( 
 			[ 
 				tf.keras.layers.experimental.preprocessing.RandomFlip( 
