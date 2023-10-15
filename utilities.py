@@ -4,6 +4,7 @@ from tensorflow.keras.layers import Conv2D, MaxPooling2D
 from tensorflow.keras.layers import Activation, Dropout, Flatten, Dense 
 from tensorflow.keras.models import Sequential 
 from tensorflow.keras.layers.experimental.preprocessing import Rescaling
+from tensorflow.keras.callbacks import EarlyStopping 
 
 class ProcessData:
     def load_datasets(self,dataset):
@@ -75,3 +76,19 @@ class HandleModel:
         model.add(Dense(len(label_file), activation='softmax')) 
 
         return model
+    
+    def compile_model(self, model):
+        model.compile(loss=tf.keras.losses.SparseCategoricalCrossentropy(), 
+                            optimizer='adam', 
+                            metrics=['accuracy'])
+        
+        return model
+
+    def train_model(self, model,train_ds,val_ds):
+        mycallbacks = [EarlyStopping(monitor='val_loss', patience=5)] 
+        history = model.fit(train_ds, 
+                        validation_data=val_ds, 
+                        epochs=3, 
+                        callbacks=mycallbacks)
+        
+        return history
