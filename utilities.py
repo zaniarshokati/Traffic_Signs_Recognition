@@ -1,5 +1,9 @@
 import tensorflow as tf 
 import matplotlib.pyplot as plt 
+from tensorflow.keras.layers import Conv2D, MaxPooling2D 
+from tensorflow.keras.layers import Activation, Dropout, Flatten, Dense 
+from tensorflow.keras.models import Sequential 
+from tensorflow.keras.layers.experimental.preprocessing import Rescaling
 
 class ProcessData:
     def load_datasets(self,dataset):
@@ -36,3 +40,38 @@ class Visualization:
                 plt.axis("off") 
 
         plt.show() 
+
+class HandleModel:
+    def __init__(self) -> None:
+        pass
+
+    def create_model(self,input_shape,label_file):
+        data_augmentation = tf.keras.Sequential( 
+			[ 
+				tf.keras.layers.experimental.preprocessing.RandomFlip( 
+					"horizontal", input_shape=input_shape), 
+				tf.keras.layers.experimental.preprocessing.RandomRotation(0.1), 
+				tf.keras.layers.experimental.preprocessing.RandomZoom(0.2), 
+				tf.keras.layers.experimental.preprocessing.RandomFlip( 
+					mode="horizontal_and_vertical") 
+			] 
+		) 
+
+        model = Sequential() 
+        model.add(data_augmentation) 
+        model.add(Rescaling(1./255)) 
+        model.add(Conv2D(128, (3, 3), activation='relu')) 
+        model.add(MaxPooling2D((2, 2))) 
+        model.add(Conv2D(64, (3, 3), activation='relu')) 
+        model.add(MaxPooling2D((2, 2))) 
+        model.add(Conv2D(128, (3, 3), activation='relu')) 
+        model.add(MaxPooling2D((2, 2))) 
+        model.add(Conv2D(256, (3, 3), activation='relu')) 
+        model.add(MaxPooling2D((2, 2))) 
+        model.add(Flatten()) 
+        model.add(Dense(64, activation='relu')) 
+        model.add(Dropout(0.2)) 
+        model.add(Dense(128, activation='relu')) 
+        model.add(Dense(len(label_file), activation='softmax')) 
+
+        return model

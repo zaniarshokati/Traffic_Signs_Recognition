@@ -7,12 +7,10 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator, load_img
 # from keras.utils.np_utils import to_categorical 
 from tensorflow.keras.utils import image_dataset_from_directory 
 from tensorflow.keras.optimizers import Adam 
-from tensorflow.keras.layers import Conv2D, MaxPooling2D 
-from tensorflow.keras.layers import Activation, Dropout, Flatten, Dense 
-from tensorflow.keras.models import Sequential 
+
 from keras import layers 
 from tensorflow import keras 
-from tensorflow.keras.layers.experimental.preprocessing import Rescaling 
+ 
 from sklearn.model_selection import train_test_split 
 
 import matplotlib.pyplot as plt 
@@ -31,6 +29,7 @@ class Application :
 	def __init__(self) -> None:
 		self.data_processor = utilities.ProcessData()
 		self.visualize = utilities.Visualization()
+		self.model_handler = utilities.HandleModel()
 	def main(self):
 		# path to the folder containing our dataset 
 		dataset = 'data/traffic_Data/DATA'
@@ -39,35 +38,10 @@ class Application :
 		label_file = pd.read_csv('data/labels.csv') 
 
 		train_ds,val_ds = self.data_processor.load_datasets(dataset)
-		self.visualize.show_sample_data(train_ds, label_file)
+		# self.visualize.show_sample_data(train_ds, label_file)
+		input_shape = (224, 224, 3)
+		model = self.model_handler.create_model(input_shape,label_file)
 		
-		data_augmentation = tf.keras.Sequential( 
-			[ 
-				tf.keras.layers.experimental.preprocessing.RandomFlip( 
-					"horizontal", input_shape=(224, 224, 3)), 
-				tf.keras.layers.experimental.preprocessing.RandomRotation(0.1), 
-				tf.keras.layers.experimental.preprocessing.RandomZoom(0.2), 
-				tf.keras.layers.experimental.preprocessing.RandomFlip( 
-					mode="horizontal_and_vertical") 
-			] 
-		) 
-
-		model = Sequential() 
-		model.add(data_augmentation) 
-		model.add(Rescaling(1./255)) 
-		model.add(Conv2D(128, (3, 3), activation='relu')) 
-		model.add(MaxPooling2D((2, 2))) 
-		model.add(Conv2D(64, (3, 3), activation='relu')) 
-		model.add(MaxPooling2D((2, 2))) 
-		model.add(Conv2D(128, (3, 3), activation='relu')) 
-		model.add(MaxPooling2D((2, 2))) 
-		model.add(Conv2D(256, (3, 3), activation='relu')) 
-		model.add(MaxPooling2D((2, 2))) 
-		model.add(Flatten()) 
-		model.add(Dense(64, activation='relu')) 
-		model.add(Dropout(0.2)) 
-		model.add(Dense(128, activation='relu')) 
-		model.add(Dense(len(label_file), activation='softmax')) 
 
 		# print(model.summary())
 
