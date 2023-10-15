@@ -31,16 +31,7 @@ class Application :
 		# Set callback functions to early stop training 
 		history = self.model_handler.train_model(model,train_ds,val_ds)
 
-		# Loss 
-		plt.plot(history.history['loss']) 
-		plt.plot(history.history['val_loss']) 
-		plt.legend(['loss', 'val_loss'], loc='upper right') 
-
-		# Accuracy 
-		plt.plot(history.history['accuracy']) 
-		plt.plot(history.history['val_accuracy']) 
-		plt.legend(['accuracy', 'val_accuracy'], loc='upper right') 
-		plt.show()
+		self.visualize.show_loss_accuracy(history)
 
 if __name__ == "__main__":
     app = Application()

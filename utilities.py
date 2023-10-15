@@ -39,8 +39,19 @@ class Visualization:
                 plt.imshow(images[i].numpy().astype("uint8")) 
                 plt.title(class_names[labels[i]]) 
                 plt.axis("off") 
-
         plt.show() 
+
+    def show_loss_accuracy(self,history):
+        # Loss 
+        plt.plot(history.history['loss']) 
+        plt.plot(history.history['val_loss']) 
+        plt.legend(['loss', 'val_loss'], loc='upper right') 
+
+        # Accuracy 
+        plt.plot(history.history['accuracy']) 
+        plt.plot(history.history['val_accuracy']) 
+        plt.legend(['accuracy', 'val_accuracy'], loc='upper right') 
+        plt.show()
 
 class HandleModel:
     def __init__(self) -> None:
