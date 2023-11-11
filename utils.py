@@ -107,9 +107,10 @@ class HandleModel:
         return model
 
     def train_model(self, model, train_ds, val_ds):
-        mycallbacks = [EarlyStopping(monitor="val_loss", patience=5)]
+        # Set callback functions to early stop training
+        callbacks = [EarlyStopping(monitor="val_loss", patience=5)]
         history = model.fit(
-            train_ds, validation_data=val_ds, epochs=3, callbacks=mycallbacks
+            train_ds, validation_data=val_ds, epochs=3, callbacks=callbacks
         )
 
         return history
