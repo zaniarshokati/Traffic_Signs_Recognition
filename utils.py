@@ -78,7 +78,6 @@ class HandleModel:
                 ),
             ]
         )
-
         model = Sequential()
         model.add(data_augmentation)
         model.add(Rescaling(1.0 / 255))
