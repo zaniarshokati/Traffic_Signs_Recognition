@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 import pandas as pd
 
 import utils
@@ -17,7 +16,7 @@ class Application:
 
     def main(self):
         train_ds, val_ds = self.data_processor.load_datasets(self.data_path)
-        # self.visualize.show_sample_data(train_ds, label_file)
+        self.visualize.show_sample_data(train_ds, label_file)
         input_shape = (224, 224, 3)
         model = self.model_handler.create_model(input_shape, self.label_file)
 
