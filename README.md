@@ -1,7 +1,6 @@
 # Traffic Signs Recognition
 
-This project aims to recognize and classify traffic signs using Convolutional Neural Networks (CNN) and Keras in Python. The dataset used for this project can be downloaded from [Kaggle](https://www.kaggle.com/datasets/ahemateja19bec1025/traffic-sign-dataset-classification/code).
-
+This project aims to recognize and classify traffic signs using Convolutional Neural Networks (CNN) and Keras in Python. 
 ## Overview
 
 The code is organized into two main files:
